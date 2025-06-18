@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://dqn0pa5idaajf"]
+
+[ext_resource type="Material" uid="uid://co7l6oxqe2b2i" path="res://Content/Materials/Debug/Material_X.tres" id="1_u7tei"]
+[ext_resource type="Material" uid="uid://dqipy3qdp374n" path="res://Content/Materials/Debug/Material_Y.tres" id="2_bv80x"]
+[ext_resource type="Material" uid="uid://hofch7jmhklv" path="res://Content/Materials/Debug/Material_Z.tres" id="3_bv80x"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_kwq2b"]
+top_radius = 0.01
+bottom_radius = 0.1
+height = 1.0
+
+[node name="TransformHelper" type="Node3D"]
+
+[node name="X" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.5, 0, 0)
+mesh = SubResource("CylinderMesh_kwq2b")
+surface_material_override/0 = ExtResource("1_u7tei")
+
+[node name="Y" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("CylinderMesh_kwq2b")
+surface_material_override/0 = ExtResource("2_bv80x")
+
+[node name="Z" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.5)
+mesh = SubResource("CylinderMesh_kwq2b")
+surface_material_override/0 = ExtResource("3_bv80x")

@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bf5v01q5t3xn7"]
+
+[ext_resource type="Shader" uid="uid://ct1eu4ry5qw4s" path="res://Content/Shaders/Spatial/Shader_Star2D.gdshader" id="1_2s8ru"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_2s8ru")
+shader_parameter/colour = Color(1, 1, 1, 1)
+shader_parameter/points = 4
+shader_parameter/thickness = 10.0
+shader_parameter/relative_size = 1.0
+shader_parameter/rotation_speed = 1.0

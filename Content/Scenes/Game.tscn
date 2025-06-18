@@ -1,0 +1,152 @@
+[gd_scene load_steps=19 format=3 uid="uid://c3tyqn2yu1p4y"]
+
+[ext_resource type="Script" uid="uid://5loox6rsdar" path="res://Systems/Managers/InputManager.cs" id="1_vstfe"]
+[ext_resource type="Script" uid="uid://dihfvigyk8gx8" path="res://Systems/Entities/Creatures/Unit.cs" id="2_5p3x2"]
+[ext_resource type="Script" uid="uid://cl1afa4d1sry8" path="res://Systems/Controllers/StarController.cs" id="2_fdsh7"]
+[ext_resource type="PackedScene" uid="uid://dqn0pa5idaajf" path="res://Content/Prefabs/Utilities/TransformHelper.tscn" id="2_j7grf"]
+[ext_resource type="PackedScene" uid="uid://djbeyf1wlk7i7" path="res://Systems/Entities/Celestial/Star.tscn" id="3_8fov1"]
+[ext_resource type="Material" uid="uid://dj4llk3e5luw6" path="res://Content/Materials/Debug/Material_DebugGrid.tres" id="3_j7grf"]
+[ext_resource type="Script" uid="uid://jsp0phttjysh" path="res://Systems/Entities/Creatures/Components/MovementComponent.cs" id="3_sa7mi"]
+[ext_resource type="Script" uid="uid://b653wy6ku5fl1" path="res://Systems/Controllers/UIController.cs" id="4_k5j0c"]
+[ext_resource type="Material" uid="uid://g4qmr1jh807g" path="res://Content/Materials/Celestial/Material_Clouds.tres" id="4_s3n2u"]
+[ext_resource type="PackedScene" uid="uid://88mj30c1vatt" path="res://Systems/Entities/Machines/Telescope.tscn" id="8_md4fn"]
+[ext_resource type="Script" uid="uid://cft2jevx2rnpn" path="res://Systems/UI/InteractionMenu2D.cs" id="11_k5j0c"]
+
+[sub_resource type="Environment" id="Environment_5p3x2"]
+background_mode = 2
+ambient_light_source = 3
+reflected_light_source = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_s3n2u"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_v8x1x"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_v8x1x"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_md4fn"]
+radius = 0.1
+
+[sub_resource type="BoxMesh" id="BoxMesh_5p3x2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sa7mi"]
+
+[node name="Game" type="Node"]
+
+[node name="Managers" type="Node" parent="."]
+
+[node name="InputManager" type="Node" parent="Managers" node_paths=PackedStringArray("_uiController", "_player")]
+script = ExtResource("1_vstfe")
+_uiController = NodePath("../../UI")
+_player = NodePath("../../World/Unit")
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="Environment" type="Node3D" parent="World"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World/Environment"]
+environment = SubResource("Environment_5p3x2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="World/Environment"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+
+[node name="Stars" type="Node3D" parent="World/Environment" node_paths=PackedStringArray("_starParentNode")]
+script = ExtResource("2_fdsh7")
+_starParentNode = NodePath(".")
+_starPrefab = ExtResource("3_8fov1")
+
+[node name="Clouds" type="MeshInstance3D" parent="World/Environment"]
+transform = Transform3D(50000, 0, 0, 0, 50000, 0, 0, 0, 50000, 0, 10000, 0)
+visible = false
+mesh = SubResource("PlaneMesh_s3n2u")
+surface_material_override/0 = ExtResource("4_s3n2u")
+
+[node name="Unit" type="CharacterBody3D" parent="World" node_paths=PackedStringArray("_headNode", "_firstPersonCamera", "_interactionArea", "MovementComponent")]
+script = ExtResource("2_5p3x2")
+_headNode = NodePath("Head")
+_firstPersonCamera = NodePath("Head/FirstPersonCamera")
+_interactionArea = NodePath("Head/InteractionArea")
+MovementComponent = NodePath("Components/MovementComponent")
+
+[node name="Components" type="Node" parent="World/Unit"]
+
+[node name="MovementComponent" type="Node" parent="World/Unit/Components" node_paths=PackedStringArray("_unit", "_headNode", "_firstPersonCamera")]
+script = ExtResource("3_sa7mi")
+_unit = NodePath("../..")
+_headNode = NodePath("../../Head")
+_firstPersonCamera = NodePath("../../Head/FirstPersonCamera")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Unit"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_v8x1x")
+
+[node name="WorldModel" type="Node3D" parent="World/Unit"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Unit/WorldModel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+layers = 2
+mesh = SubResource("CapsuleMesh_v8x1x")
+
+[node name="Head" type="Node3D" parent="World/Unit"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="FirstPersonCamera" type="Camera3D" parent="World/Unit/Head"]
+cull_mask = 1048573
+far = 500000.0
+
+[node name="InteractionArea" type="Area3D" parent="World/Unit/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Unit/Head/InteractionArea"]
+shape = SubResource("SphereShape3D_md4fn")
+
+[node name="TransformHelper" parent="World/Unit/Head/InteractionArea" instance=ExtResource("2_j7grf")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Ground" type="Node3D" parent="World"]
+transform = Transform3D(1000, 0, 0, 0, 1, 0, 0, 0, 1000, 0, -0.6, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Ground"]
+mesh = SubResource("BoxMesh_5p3x2")
+surface_material_override/0 = ExtResource("3_j7grf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Ground/StaticBody3D"]
+shape = SubResource("BoxShape3D_sa7mi")
+
+[node name="Telescope" parent="World" instance=ExtResource("8_md4fn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.73927)
+
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("_interactionMenu2D")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_k5j0c")
+_interactionMenu2D = NodePath("InteractionMenu2D")
+
+[node name="InteractionMenu2D" type="Control" parent="UI" node_paths=PackedStringArray("_labelContainer")]
+anchors_preset = 0
+script = ExtResource("11_k5j0c")
+_labelContainer = NodePath("LabelMenu/MarginContainer/LabelContainer")
+
+[node name="LabelMenu" type="Control" parent="UI/InteractionMenu2D"]
+anchors_preset = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/InteractionMenu2D/LabelMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/InteractionMenu2D/LabelMenu/MarginContainer"]
+layout_mode = 2
+
+[node name="LabelContainer" type="VBoxContainer" parent="UI/InteractionMenu2D/LabelMenu/MarginContainer"]
+layout_mode = 2

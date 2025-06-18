@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://djbeyf1wlk7i7"]
+
+[ext_resource type="Script" uid="uid://c23tibrwwrcrp" path="res://Systems/Entities/Celestial/Star.cs" id="1_rtl5u"]
+[ext_resource type="Material" uid="uid://bf5v01q5t3xn7" path="res://Content/Materials/Celestial/Material_Star2D.tres" id="3_0fvuv"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_db7lg"]
+size = Vector2(500, 500)
+
+[node name="Star" type="Node3D" node_paths=PackedStringArray("_mesh2D")]
+script = ExtResource("1_rtl5u")
+_mesh2D = NodePath("2DMesh")
+_star2DMaterial = ExtResource("3_0fvuv")
+
+[node name="2DMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("QuadMesh_db7lg")
+surface_material_override/0 = ExtResource("3_0fvuv")

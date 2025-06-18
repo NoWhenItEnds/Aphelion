@@ -1,0 +1,18 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://g4qmr1jh807g"]
+
+[ext_resource type="Shader" uid="uid://efc8q8iixeqi" path="res://Content/Shaders/Spatial/Shader_Clouds.gdshader" id="1_jxnl0"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_jxnl0")
+shader_parameter/noise_scale = 11.24
+shader_parameter/speed = 0.16
+shader_parameter/darkness_amount = 9.155
+shader_parameter/detail = 0.23
+shader_parameter/concentration = 0.0
+shader_parameter/amount = 0.12
+shader_parameter/bloom = 2.0
+shader_parameter/alpha = 8.0
+shader_parameter/cloud_tint = Color(1, 1, 1, 1)
+shader_parameter/edge_fade = -0.035
+shader_parameter/rotation_matrix = Transform2D(1.6, -1.2, 1.2, 1.6, 0, 0)
